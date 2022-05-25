@@ -33,7 +33,7 @@
 
         <label class="form-label" for="rating">Rating <span class="text-danger"> * </span></label>
             <div class="range range-field">
-                <input type="range" name ="rating" class="form-range range-field" min="1" max="5" step="1" id="rating" />
+                <input type="range" name ="rating" class="form-range range-field" min="1" max="5" step="1" id="rating" value ="<?= old('rating')?>"/>
             </div>
 
         <div class="form-group">

@@ -24,7 +24,7 @@
             </h3>
             <br>
             <h4>Review:</h4>
-            <h4><?= $review->description ?></h4>
+            <h4 class="lead"><?= $review->description ?></h4>
 
             <h6 class="my-5">Reviewed by <?=$review->username ?></h6>
 
