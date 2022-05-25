@@ -146,6 +146,16 @@ class Review extends BaseController
 
     public function updatePhoto($id)
     {
+
+        $review = $this->model->where('id', $id)
+                              ->first();
+
+        if(file_exists("../public/images/" . $review->stall_pic)){
+
+            unlink("../public/images/" . $review->stall_pic);
+            
+        }
+        
         $file = $this->request->getFile('stall_pic');
 
         if(! $file->isValid()) {
