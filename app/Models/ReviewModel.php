@@ -22,18 +22,20 @@ class ReviewModel extends \CodeIgniter\Model
     // set custom error message.
     protected $validationMessages = [
         'description' => [
-            'required' => "Please Fill in the description."
+            'required' => "Please Fill in the Description."
         ],
         'username' => [
-            'required' => "Please fill in the username."
+            'required' => "Please fill in the Name."
         ],
         'restaurant' => [
-            'required' => "Please fill in the restaurant name."
+            'required' => "Please fill in the Restaurant."
         ],
         'rating' => [
-            'required' => "Please leave a rating."
+            'required' => "Please leave a Rating."     
         ]
     ];
+
+    protected $useTimestamps = true;
 
     public function search($term)
     {
@@ -42,14 +44,15 @@ class ReviewModel extends \CodeIgniter\Model
             return [];
 
         }
-        return $this->select('id, description, restaurant')
+
+
+        return $this->select('*')
                     ->like('restaurant', $term) 
                     ->orLike('description', $term)
                     ->get()
                     ->getResultArray();
     }
 
-    
 }
 
 ?>

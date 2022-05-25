@@ -7,25 +7,27 @@ use App\Entities\Reviews;
 
 class Review extends BaseController
 {
-
+    
     public function __construct() {
         $this->model = new \App\Models\ReviewModel;
     }
     public function index()
     {
-
-        $results = $this->model->findAll();
         
+        $result = $this->model->findAll();
+        
+        // $post = $_POST['input'] ;
+       
+
         return view('index', [
-            "results" => $results
+            "results" => $result
         ]) ;
         
     }
 
-
     public function new()
     {
-        
+       
         return view('upload', [
             'data' => $this->model
         ]);
@@ -34,43 +36,55 @@ class Review extends BaseController
     public function upload()
     {
         $data = $this->request->getPost();
-
+       
         $file = $this->request->getFile('stall_pic');
 
-
-        if(! $file->isValid()) {
-
-            $error_code = $file->getError();
-
-            if($error_code == UPLOAD_ERR_NO_FILE) {
-
-                return redirect()->back()
-                                 ->with('info', 'No File Selected')
-                                 ->withInput();
+        foreach ($data as $string){
+            if(strlen($string) == 0) {
+                $error = true;
+            } else {
+                $error = false;
             }
-
-            throw new \RuntimeException($file->getErrorString(). "" . $error_code);
         }
 
-        $size = $file->getSizeByUnit('mb');
+        if(! $error){
 
-        if ($size > 5) {
-            return redirect()->back()
-                             ->with('info', 'File too large (max 2MB)');
+            if((! $file->isValid())) {
+
+                $error_code = $file->getError();
+    
+                if($error_code == UPLOAD_ERR_NO_FILE) {
+    
+                    return redirect()->back()
+                                     ->with('warning', 'No File Selected')
+                                     ->withInput();
+                }
+    
+                throw new \RuntimeException($file->getErrorString(). "" . $error_code);
+            }
+    
+            $size = $file->getSizeByUnit('mb');
+    
+            if ($size > 5) {
+                return redirect()->back()
+                                 ->with('warning', 'File too large (max 2MB)');
+            }
+    
+            $type = $file->getMimeType();
+    
+            if(! in_array($type, ['image/png', 'image/jpeg'])) {
+    
+                return redirect()->back()
+                                 ->with('warning', 'Invalid File Format (PNG or JPEG only)');
+            }
+    
+            $imgName = $file->getRandomName();
+            $file->move('../public/images' , $imgName);
+            $data['stall_pic'] = $imgName;
+    
         }
-
-        $type = $file->getMimeType();
-
-        if(! in_array($type, ['image/png', 'image/jpeg'])) {
-
-            return redirect()->back()
-                             ->with('info', 'Invalid File Format (PNG or JPEG only)');
-        }
-
-        $imgName = $file->getRandomName();
-        $file->move('../public/images' , $imgName);
-
-        $data['stall_pic'] = $imgName;
+        
+        
         
         if($this->model->insert($data)) {
             return redirect()->to("/review/index")
@@ -111,7 +125,7 @@ class Review extends BaseController
         if (! $review->hasChanged()) {
 
             return redirect()->back()
-                             ->with('info', 'Nothing to Update')
+                             ->with('warning', 'Nothing to Update')
                              ->withInput();
 
         }
@@ -124,21 +138,11 @@ class Review extends BaseController
         } else {
             return redirect()->back()
                              ->with('errors', $this->model->errors())
-                             ->with('info', 'Invalid Data')
+                             ->with('warning', 'Invalid Data')
                              ->withInput();
         }
     }
     
-    public function changePhoto($id){
-
-        $review = $this->model->where('id', $id)
-                              ->first();
-
-        return view('changePhoto', [
-            'review' => $review
-        ]);
-
-    }
 
     public function updatePhoto($id)
     {
@@ -151,7 +155,8 @@ class Review extends BaseController
             if($error_code == UPLOAD_ERR_NO_FILE) {
 
                 return redirect()->back()
-                                 ->with('info', 'No File Selected');
+                                 ->with('warning', 'No File Selected')
+                                 ->with('update', 'no_update');
             }
 
             throw new \RuntimeException($file->getErrorString(). "" . $error_code);
@@ -161,7 +166,7 @@ class Review extends BaseController
 
         if ($size > 5) {
             return redirect()->back()
-                             ->with('info', 'File too large (max 2MB)');
+                             ->with('warning', 'File too large (max 2MB)');
         }
 
         $type = $file->getMimeType();
@@ -169,7 +174,7 @@ class Review extends BaseController
         if(! in_array($type, ['image/png', 'image/jpeg'])) {
 
             return redirect()->back()
-                             ->with('info', 'Invalid File Format (PNG or JPEG only)');
+                             ->with('warning', 'Invalid File Format (PNG or JPEG only)');
         }
 
         $imgName = $file->getRandomName();
@@ -215,15 +220,16 @@ class Review extends BaseController
             
 
             return redirect()->to("/review/index")
-                                ->with('info', 'Task Deleted Successfully');
+                                ->with('warning', 'Task Deleted Successfully');
         }
     }
 
     public function search()
     {
-        $reviews = $this->model->search($this->request->getGet('q'));
 
+        $reviews = $this->model->search($this->request->getGet('q'));
 
         return $this->response->setJSON($reviews);
     }
+
 }

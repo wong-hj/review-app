@@ -36,6 +36,14 @@ class Review extends Migration
             'stall_pic' => [
                 'type' => 'VARCHAR',
                 'constraint' => 128
+            ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true
             ]
         ]);
 

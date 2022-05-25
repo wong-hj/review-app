@@ -9,19 +9,15 @@
     <link rel="stylesheet" type="text/css" href="<?= site_url('/css/auto-complete.css')?>">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
 </head>
 <body>
-    
-    <?php if (session()->has('info')): ?>
-        <div class="info">
-            <?= session('info') ?>
-        </div>
-    <?php endif ?>
     
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="<?= site_url("/review/index")?>">Review App</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -36,7 +32,43 @@
         </div>
     </nav>
 
+    <?php if (session()->has('info')): ?>
+        <div class="info bg-success text-light w-50 rounded border p-3 mx-auto mt-3 justify-content-center">
+            <?= session('info') ?>
+        </div>
+    <?php endif ?>
+
+    <?php if (session()->has('warning')): ?>
+        <div class="warning bg-danger text-light w-50 rounded border p-3 mx-auto mt-3 justify-content-center">
+            <?= session('warning') ?>
+        </div>
+    <?php endif ?>
+
+    
+
     <?= $this->renderSection("content") ?>
+
+    <!-- Footer -->
+    <footer class="page-footer font-small bg-dark text-light fixed-bottom" id="footer-final">
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2022 This is a Footer
+    </div>
+    <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+
+    <script>
+        $(window).scroll(function() {
+            if ($(this).scrollTop() < 500) {
+                $("#footer-final").hide();
+            }
+            else {
+                $("#footer-final").show();
+            }
+        });
+</script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
