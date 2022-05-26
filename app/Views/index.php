@@ -10,50 +10,48 @@
 
     <div class="w-75 mx-auto">
     <h1 class="my-5">Customer Reviews</h1>
-        <div class="row justify-content-center">
+        <div class="row row-cols-1 justify-content-center">
 
-        <div class="mb-5">
-            <label for="query" class="mx-5 float-right">
-                <div class="form-outline">
-                    <input type="search" id="query" class="form-control" name="query" placeholder="Search" aria-label="Search" />
-                    <i class="fa-solid fa-magnifying-glass float-right mr-2" style="position:relative; top:-25px;"></i>
-                </div>
-            </label>
-        </div>
-        
-        <div class="message" style="display: none;">
-            <h2>No Result Found.</h2>
-        </div>
-        
-        <?php foreach($results as $result): ?>
-            
-            
-        <div class="col-3 border rounded m-3 py-2 px-3 hover-shadow review-card">
-            
-
-            <a href="<?= site_url('/review/show/' . $result->id)?>" class="text-dark text-decoration-none">
-            <div class="row">
-                <div class="col-5 border-right border-secondary d-flex align-items-center">
-                    <img src="<?= site_url('/images/' . $result->stall_pic) ?> " alt="A Review Photo" class=" img-fluid rounded border" style="">
-                </div>
-            
-                <div class="col-7">
-                    <h1 class="text-truncate display-6 restaurant"><?= esc($result->restaurant) ?></h1>
-                    <h4><?= $result->rating ?> <i class="fa-solid fa-star"></i></h4>
-                    <h5 class="text-truncate desc"><?= esc($result->description) ?></h5>
-
-                    <p class="lead">By <?= esc($result->username) ?></p>
-                </div>
+            <div class="mb-5">
+                <label for="query" class="float-right">
+                    <div class="form-outline">
+                        <input type="search" id="query" class="form-control" name="query" placeholder="Search" aria-label="Search" />
+                        <i class="fa-solid fa-magnifying-glass float-right mr-2" style="position:relative; top:-25px;"></i>
+                    </div>
+                </label>
             </div>
-            </a>
+            
+            <div class="message" style="display: none;">
+                <h2>No Result Found.</h2>
+            </div>
+            
+            <?php foreach($results as $result): ?>
                 
-            
-        </div>
-        
-        <?php endforeach ?>
-        
-            
+                
+            <div class="col-3 border rounded m-3 py-2 px-3 hover-shadow review-card">
+                
 
+                <a href="<?= site_url('/review/show/' . $result->id)?>" class="text-dark text-decoration-none">
+                    <div class="row">
+                        <div class="col-5 border-right border-secondary d-flex align-items-center">
+                            <img src="<?= site_url('/images/' . $result->stall_pic) ?> " alt="A Review Photo" class=" img-fluid rounded border" style="">
+                        </div>
+                    
+                        <div class="col-7">
+                            <h1 class="text-truncate display-6 restaurant"><?= esc($result->restaurant) ?></h1>
+                            <h4><?= $result->rating ?> <i class="fa-solid fa-star"></i></h4>
+                            <h5 class="text-truncate desc"><?= esc($result->description) ?></h5>
+
+                            <p class="lead">By <?= esc($result->username) ?></p>
+                        </div>
+                    </div>
+                </a>
+                    
+                
+            </div>
+            
+            <?php endforeach ?>
+        
         </div>
     </div>
 
